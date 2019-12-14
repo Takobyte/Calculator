@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2191af9-8a15-4a42-8dc2-cfe4d5d61fbe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/hamcrest-all-1.3.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/junit-4.13-rc-2.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Addition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Division.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MathOperation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Subtraction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TestOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Calculator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Calculator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Calculator/Calculator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Calculator/Calculator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Calculator/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Calculator/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestOperation.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -90,8 +77,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TestOperation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="35" column="38" lean-forward="true" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
+            <state relative-caret-position="494">
+              <caret line="51" column="41" lean-forward="true" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -267,12 +254,27 @@
     <history-entry file="TestOperation - 2019.12.14 at 01h 05m 56s.xml">
       <configuration name="TestOperation" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TestOperation - 2019.12.14 at 01h 26m 51s.xml">
+      <configuration name="TestOperation" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestOperation - 2019.12.14 at 01h 27m 47s.xml">
+      <configuration name="TestOperation" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestOperation - 2019.12.14 at 01h 32m 57s.xml">
+      <configuration name="TestOperation" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestOperation - 2019.12.14 at 01h 33m 07s.xml">
+      <configuration name="TestOperation" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestOperation - 2019.12.14 at 01h 33m 19s.xml">
+      <configuration name="TestOperation" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25373134" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25373134" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -280,8 +282,8 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -361,8 +363,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TestOperation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="35" column="38" lean-forward="true" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
+        <state relative-caret-position="494">
+          <caret line="51" column="41" lean-forward="true" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

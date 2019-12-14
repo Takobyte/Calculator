@@ -5,5 +5,5 @@ public interface MathOperation {
     // Effect: calculate the number depending on the operators used
     // Example: leftNumber = 2.0, rightNumber = 3.0, If + operator is used
     // it should give back result = 5.0
-    public BigDecimal operation(String leftNumber, String rightNumber);
+    BigDecimal operation(String leftNumber, String rightNumber);
 }

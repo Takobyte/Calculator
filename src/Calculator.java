@@ -28,5 +28,11 @@ public class Calculator {
     private JButton changeSignBtn;
     private JPanel calculatorPanel;
 
-
+    public Calculator() {
+        JFrame f = new JFrame("Calculator");
+        f.setContentPane(calculatorPanel);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.pack();
+        f.setVisible(true);
+    }
 }

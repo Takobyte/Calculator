@@ -6,5 +6,6 @@ public enum Operators {
     INVERSE,
     PERCENT,
     SQUARE,
-    SQUAREROOT
+    SQUAREROOT,
+    EMPTY,
 }

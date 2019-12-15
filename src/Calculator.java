@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
 public class Calculator {
@@ -22,7 +24,7 @@ public class Calculator {
     private JButton oneBtn;
     private JButton twoBtn;
     private JButton threeBtn;
-    private JButton plusBtn;
+    public JButton plusBtn;
     private JButton equalBtn;
     private JButton decimalBtn;
     private JButton zeroBtn;
@@ -36,11 +38,61 @@ public class Calculator {
     private Operators op;
 
     public Calculator() {
+        // init global variable
+        op = Operators.EMPTY;
+        ln = "";
+        rn = "";
+
         JFrame f = new JFrame("Calculator");
         f.setContentPane(calculatorPanel);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
+        plusBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                op = Operators.ADDITION;
+                if (ln.isEmpty()) {
+                    if (getResultText().isEmpty()) {
+                        ln = "0";
+                        entryText.setText("0 + ");
+                    } else {
+                        entryText.setText(getResultText() + " + ");
+                    }
+                } else {
+                    entryText.setText(ln + " + ");
+                }
+            }
+        });
+        oneBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // If operator buttons have not been clicked yet
+                // keep adding number to ln (left number)
+                if (op == Operators.EMPTY) {
+                    if (ln.isEmpty()) {
+                        entryText.setText("");
+                        ln = "1";
+                    } else {
+                        ln = ln.concat("1");
+                    }
+                    entryText.setText(ln);
+                } else {
+                    rn = "1";
+                    entryText.setText(entryText.getText() + rn);
+                }
+            }
+        });
+        equalBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculateResult();
+                entryText.setText(entryText.getText() + " = " + result.toString());
+                ln = "";
+                rn = "";
+                op = Operators.EMPTY;
+            }
+        });
     }
 
 
@@ -81,7 +133,7 @@ public class Calculator {
 
     // Effect: calculate the result depending on the Operator used
     // and display the text
-    private void calculateResult() {
+    public void calculateResult() {
         switch (op) {
             case ADDITION:
                 result = new Addition().operation(ln,rn);
@@ -117,4 +169,22 @@ public class Calculator {
         }
         resultText.setText(result.toString());
     }
+
+    public void setOperator(Operators op) {
+        this.op = op;
+    }
+
+    public void setLeftNumber(String ln) {
+        this.ln = ln;
+    }
+
+    public void setRightNumber(String rn) {
+        this.rn = rn;
+    }
+
+    public String getResultText() {
+        return resultText.getText();
+    }
+
+
 }

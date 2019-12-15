@@ -10,6 +10,7 @@ public class TestOperation {
     private Addition testAddition;
     private Division testDivison;
     private Subtraction testSubtraction;
+    private Calculator testCalculator;
 
 
     @Before
@@ -17,6 +18,7 @@ public class TestOperation {
         testAddition = new Addition();
         testDivison = new Division();
         testSubtraction = new Subtraction();
+        testCalculator = new Calculator();
     }
 
 
@@ -66,6 +68,25 @@ public class TestOperation {
         BigDecimal result = testAddition.operation("5.0", "-5.0");
         BigDecimal expected = new BigDecimal("0.0");
         assertEquals(expected,result);
+    }
+
+    // Text addition calculation
+    @Test
+    public void testAdditionCalc() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setRightNumber("6");
+        testCalculator.setOperator(Operators.ADDITION);
+        testCalculator.calculateResult();
+        assertEquals("11", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSubtractionCalc() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setRightNumber("6");
+        testCalculator.setOperator(Operators.SUBTRACTION);
+        testCalculator.calculateResult();
+        assertEquals("-1", testCalculator.getResultText());
     }
 
 }

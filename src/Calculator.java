@@ -24,7 +24,7 @@ public class Calculator {
     private JButton oneBtn;
     private JButton twoBtn;
     private JButton threeBtn;
-    public JButton plusBtn;
+    private JButton plusBtn;
     private JButton equalBtn;
     private JButton decimalBtn;
     private JButton zeroBtn;
@@ -43,55 +43,49 @@ public class Calculator {
         ln = "";
         rn = "";
 
+        // init Jframe
         JFrame f = new JFrame("Calculator");
         f.setContentPane(calculatorPanel);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
-        plusBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                op = Operators.ADDITION;
+
+        // Button listeners
+        plusBtn.addActionListener(e -> {
+            op = Operators.ADDITION;
+            if (ln.isEmpty()) {
+                if (getResultText().isEmpty()) {
+                    ln = "0";
+                    entryText.setText("0 + ");
+                } else {
+                    entryText.setText(getResultText() + " + ");
+                }
+            } else {
+                entryText.setText(ln + " + ");
+            }
+        });
+        oneBtn.addActionListener(e -> {
+            // If operator buttons have not been clicked yet
+            // keep adding number to ln (left number)
+            if (op == Operators.EMPTY) {
                 if (ln.isEmpty()) {
-                    if (getResultText().isEmpty()) {
-                        ln = "0";
-                        entryText.setText("0 + ");
-                    } else {
-                        entryText.setText(getResultText() + " + ");
-                    }
+                    entryText.setText("");
+                    ln = "1";
                 } else {
-                    entryText.setText(ln + " + ");
+                    ln = ln.concat("1");
                 }
+                entryText.setText(ln);
+            } else {
+                rn = "1";
+                entryText.setText(entryText.getText() + rn);
             }
         });
-        oneBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // If operator buttons have not been clicked yet
-                // keep adding number to ln (left number)
-                if (op == Operators.EMPTY) {
-                    if (ln.isEmpty()) {
-                        entryText.setText("");
-                        ln = "1";
-                    } else {
-                        ln = ln.concat("1");
-                    }
-                    entryText.setText(ln);
-                } else {
-                    rn = "1";
-                    entryText.setText(entryText.getText() + rn);
-                }
-            }
-        });
-        equalBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                calculateResult();
-                entryText.setText(entryText.getText() + " = " + result.toString());
-                ln = "";
-                rn = "";
-                op = Operators.EMPTY;
-            }
+        equalBtn.addActionListener(e -> {
+            calculateResult();
+            entryText.setText(entryText.getText() + " = " + result.toString());
+            ln = "";
+            rn = "";
+            op = Operators.EMPTY;
         });
     }
 
@@ -170,6 +164,7 @@ public class Calculator {
         resultText.setText(result.toString());
     }
 
+    // jUnit Test purposes only
     public void setOperator(Operators op) {
         this.op = op;
     }

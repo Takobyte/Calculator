@@ -89,4 +89,23 @@ public class TestOperation {
         assertEquals("-1", testCalculator.getResultText());
     }
 
+    @Test
+    public void  testMultiplicationCalc() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setRightNumber("5.5");
+        testCalculator.setOperator(Operators.MULTIPLICATION);
+        testCalculator.calculateResult();
+        assertEquals("27.5", testCalculator.getResultText());
+    }
+
+    // Test for division precision, should round up to 10th decimal place
+    @Test
+    public void setTestDivison() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setRightNumber("5.5");
+        testCalculator.setOperator(Operators.DIVISION);
+        testCalculator.calculateResult();
+        assertEquals("0.9090909091", testCalculator.getResultText());
+    }
+
 }

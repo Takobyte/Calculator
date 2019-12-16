@@ -98,14 +98,70 @@ public class TestOperation {
         assertEquals("27.5", testCalculator.getResultText());
     }
 
+    // Test for max on multiplication
+    @Test
+    public void setTestMaxMultiplication() {
+        testCalculator.setLeftNumber("9999999999");
+        testCalculator.setRightNumber("9999999999");
+        testCalculator.setOperator(Operators.MULTIPLICATION);
+        testCalculator.calculateResult();
+        assertEquals("9.9999999980E+19", testCalculator.getResultText());
+    }
+
+    // Test for min on multiplication
+    @Test
+    public void setTestMinMultiplication() {
+        testCalculator.setLeftNumber("-9999999999");
+        testCalculator.setRightNumber("9999999999");
+        testCalculator.setOperator(Operators.MULTIPLICATION);
+        testCalculator.calculateResult();
+        assertEquals("-9.9999999980E+19", testCalculator.getResultText());
+    }
+
     // Test for division precision, should round up to 10th decimal place
     @Test
-    public void setTestDivison() {
+    public void setTestDivision() {
+        testCalculator.setLeftNumber("1");
+        testCalculator.setRightNumber("8");
+        testCalculator.setOperator(Operators.DIVISION);
+        testCalculator.calculateResult();
+        assertEquals("0.125", testCalculator.getResultText());
+    }
+
+    @Test
+    public void setTestDivisionMaxPrecision() {
         testCalculator.setLeftNumber("5");
         testCalculator.setRightNumber("5.5");
         testCalculator.setOperator(Operators.DIVISION);
         testCalculator.calculateResult();
-        assertEquals("0.9090909091", testCalculator.getResultText());
+        assertEquals("0.90909090909", testCalculator.getResultText());
+    }
+
+    @Test
+    public void setTestDivisionSciNotationPrecision() {
+        testCalculator.setLeftNumber("1");
+        testCalculator.setRightNumber("9999999999");
+        testCalculator.setOperator(Operators.DIVISION);
+        testCalculator.calculateResult();
+        assertEquals("1.0000000001E-10", testCalculator.getResultText());
+    }
+
+    @Test
+    public void setTestDivisionZero() {
+        testCalculator.setLeftNumber("0");
+        testCalculator.setRightNumber("9999999999");
+        testCalculator.setOperator(Operators.DIVISION);
+        testCalculator.calculateResult();
+        assertEquals("0", testCalculator.getResultText());
+    }
+
+    @Test
+    public void setTestDivisionError() {
+        testCalculator.setLeftNumber("0");
+        testCalculator.setRightNumber("0");
+        testCalculator.setOperator(Operators.DIVISION);
+        testCalculator.calculateResult();
+        assertEquals("Division undefined", testCalculator.getResultText());
     }
 
 }

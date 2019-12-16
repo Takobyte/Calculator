@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Division implements MathOperation {
@@ -7,7 +8,10 @@ public class Division implements MathOperation {
     public BigDecimal operation(String leftNumber, String rightNumber) {
         BigDecimal ln = new BigDecimal(leftNumber);
         BigDecimal rn = new BigDecimal(rightNumber);
-        BigDecimal result = ln.divide(rn,10, RoundingMode.HALF_UP);
+        // setting precision to 11 means that in scientific notation,
+        // it will always have 10 decimal places
+        MathContext mc = new MathContext(11);
+        BigDecimal result = ln.divide(rn,mc);
         return result;
     }
 

@@ -128,18 +128,24 @@ public class Calculator {
     // Effect: calculate the result depending on the Operator used
     // and display the text
     public void calculateResult() {
+
         switch (op) {
             case ADDITION:
-                result = new Addition().operation(ln,rn);
+                result = new Addition().operation(ln, rn);
                 break;
             case SUBTRACTION:
-                result = new Subtraction().operation(ln,rn);
+                result = new Subtraction().operation(ln, rn);
                 break;
             case MULTIPLICATION:
-                result = new Multiplication().operation(ln,rn);
+                result = new Multiplication().operation(ln, rn);
                 break;
             case DIVISION:
-                result = new Division().operation(ln,rn);
+                try {
+                    result = new Division().operation(ln, rn);
+                } catch (Exception e) {
+                    resultText.setText("Division undefined");
+                    return;
+                }
                 break;
             case INVERSE:
                 if (!rn.isEmpty()) {
@@ -161,6 +167,7 @@ public class Calculator {
                 result = new BigDecimal("0");
                 break;
         }
+
         resultText.setText(result.toString());
     }
 

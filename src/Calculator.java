@@ -143,7 +143,7 @@ public class Calculator {
                 try {
                     result = new Division().operation(ln, rn);
                 } catch (Exception e) {
-                    resultText.setText("Division undefined");
+                    resultText.setText("Division Undefined");
                     return;
                 }
                 break;
@@ -161,7 +161,12 @@ public class Calculator {
                 result = new Square().operation(ln);
                 break;
             case SQUAREROOT:
-                result = new SquareRoot().operation(ln);
+                try {
+                    result = new SquareRoot().operation(ln);
+                } catch (Exception e) {
+                    resultText.setText("Invalid Input");
+                    return;
+                }
                 break;
             default:
                 result = new BigDecimal("0");

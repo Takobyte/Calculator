@@ -100,7 +100,7 @@ public class TestOperation {
 
     // Test for max on multiplication
     @Test
-    public void setTestMaxMultiplication() {
+    public void testMaxMultiplication() {
         testCalculator.setLeftNumber("9999999999");
         testCalculator.setRightNumber("9999999999");
         testCalculator.setOperator(Operators.MULTIPLICATION);
@@ -110,7 +110,7 @@ public class TestOperation {
 
     // Test for min on multiplication
     @Test
-    public void setTestMinMultiplication() {
+    public void testMinMultiplication() {
         testCalculator.setLeftNumber("-9999999999");
         testCalculator.setRightNumber("9999999999");
         testCalculator.setOperator(Operators.MULTIPLICATION);
@@ -120,7 +120,7 @@ public class TestOperation {
 
     // Test for division precision, should round up to 10th decimal place
     @Test
-    public void setTestDivision() {
+    public void testDivision() {
         testCalculator.setLeftNumber("1");
         testCalculator.setRightNumber("8");
         testCalculator.setOperator(Operators.DIVISION);
@@ -129,7 +129,7 @@ public class TestOperation {
     }
 
     @Test
-    public void setTestDivisionMaxPrecision() {
+    public void testDivisionMaxPrecision() {
         testCalculator.setLeftNumber("5");
         testCalculator.setRightNumber("5.5");
         testCalculator.setOperator(Operators.DIVISION);
@@ -138,7 +138,7 @@ public class TestOperation {
     }
 
     @Test
-    public void setTestDivisionSciNotationPrecision() {
+    public void testDivisionSciNotationPrecision() {
         testCalculator.setLeftNumber("1");
         testCalculator.setRightNumber("9999999999");
         testCalculator.setOperator(Operators.DIVISION);
@@ -147,7 +147,16 @@ public class TestOperation {
     }
 
     @Test
-    public void setTestDivisionZero() {
+    public void testDivisionNegSciNotationPrecision() {
+        testCalculator.setLeftNumber("-1");
+        testCalculator.setRightNumber("9999999999");
+        testCalculator.setOperator(Operators.DIVISION);
+        testCalculator.calculateResult();
+        assertEquals("-1.0000000001E-10", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testDivisionZero() {
         testCalculator.setLeftNumber("0");
         testCalculator.setRightNumber("9999999999");
         testCalculator.setOperator(Operators.DIVISION);
@@ -156,12 +165,116 @@ public class TestOperation {
     }
 
     @Test
-    public void setTestDivisionError() {
+    public void testDivisionError() {
         testCalculator.setLeftNumber("0");
         testCalculator.setRightNumber("0");
         testCalculator.setOperator(Operators.DIVISION);
         testCalculator.calculateResult();
-        assertEquals("Division undefined", testCalculator.getResultText());
+        assertEquals("Division Undefined", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testInverse() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setOperator(Operators.INVERSE);
+        testCalculator.calculateResult();
+        assertEquals("0.2", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testPercent() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setOperator(Operators.PERCENT);
+        testCalculator.calculateResult();
+        assertEquals("0.05", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testPercentZero() {
+        testCalculator.setLeftNumber("0");
+        testCalculator.setOperator(Operators.PERCENT);
+        testCalculator.calculateResult();
+        assertEquals("0.00", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testPercentMin() {
+        testCalculator.setLeftNumber("-9999999999");
+        testCalculator.setOperator(Operators.PERCENT);
+        testCalculator.calculateResult();
+        assertEquals("-99999999.99", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testPercentMax() {
+        testCalculator.setLeftNumber("9999999999");
+        testCalculator.setOperator(Operators.PERCENT);
+        testCalculator.calculateResult();
+        assertEquals("99999999.99", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquare() {
+        testCalculator.setLeftNumber("5");
+        testCalculator.setOperator(Operators.SQUARE);
+        testCalculator.calculateResult();
+        assertEquals("25", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareZero() {
+        testCalculator.setLeftNumber("0");
+        testCalculator.setOperator(Operators.SQUARE);
+        testCalculator.calculateResult();
+        assertEquals("0", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareMin() {
+        testCalculator.setLeftNumber("-9999999999");
+        testCalculator.setOperator(Operators.SQUARE);
+        testCalculator.calculateResult();
+        assertEquals("9.9999999980E+19", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareMax() {
+        testCalculator.setLeftNumber("9999999999");
+        testCalculator.setOperator(Operators.SQUARE);
+        testCalculator.calculateResult();
+        assertEquals("9.9999999980E+19", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareRoot() {
+        testCalculator.setLeftNumber("25");
+        testCalculator.setOperator(Operators.SQUAREROOT);
+        testCalculator.calculateResult();
+        assertEquals("5", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareRootZero() {
+        testCalculator.setLeftNumber("0");
+        testCalculator.setOperator(Operators.SQUAREROOT);
+        testCalculator.calculateResult();
+        assertEquals("0", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareRootNegative() {
+        testCalculator.setLeftNumber("-25");
+        testCalculator.setOperator(Operators.SQUAREROOT);
+        testCalculator.calculateResult();
+        assertEquals("Invalid Input", testCalculator.getResultText());
+    }
+
+    @Test
+    public void testSquareRootMax() {
+        testCalculator.setLeftNumber("9999999999");
+        testCalculator.setOperator(Operators.SQUAREROOT);
+        testCalculator.calculateResult();
+        assertEquals("99999.999995", testCalculator.getResultText());
     }
 
 }

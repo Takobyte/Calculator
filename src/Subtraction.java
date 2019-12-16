@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class Subtraction implements MathOperation {
 
@@ -6,7 +7,10 @@ public class Subtraction implements MathOperation {
     public BigDecimal operation(String leftNumber, String rightNumber) {
         BigDecimal ln = new BigDecimal(leftNumber);
         BigDecimal rn = new BigDecimal(rightNumber);
-        BigDecimal result = ln.subtract(rn);
+        // setting precision to 11 means that in scientific notation,
+        // it will always have 10 decimal places
+        MathContext mc = new MathContext(11);
+        BigDecimal result = ln.subtract(rn).round(mc);
         return result;
     }
 }

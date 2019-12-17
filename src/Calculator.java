@@ -55,7 +55,9 @@ public class Calculator {
         f.pack();
         f.setVisible(true);
 
-        // Button listeners
+        /*  Button listeners */
+
+        // Operators
         plusBtn.addActionListener(e -> {
             op = Operators.ADDITION;
             if (ln.isEmpty()) {
@@ -69,6 +71,12 @@ public class Calculator {
                 entryText.setText(ln + " + ");
             }
         });
+        minusBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         equalBtn.addActionListener(e -> {
             calculateResult();
             entryText.setText(entryText.getText() + " = " + result.toString());
@@ -79,8 +87,10 @@ public class Calculator {
             op = Operators.EMPTY;
         });
 
+
         // If operator buttons have not been clicked yet
         // keep adding number to ln (left number)
+        zeroBtn.addActionListener(e -> addNumber(0));
         oneBtn.addActionListener(e -> addNumber(1));
         twoBtn.addActionListener(e -> addNumber(2));
         threeBtn.addActionListener(e -> addNumber(3));
@@ -95,6 +105,54 @@ public class Calculator {
         clearEntryBtn.addActionListener(e -> clearEntry());
         clearBtn.addActionListener(e -> clear());
         backBtn.addActionListener(e -> delete());
+        percentBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        invertButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        squareButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        rootButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        divideBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        multiplyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        decimalBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        changeSignBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     // Effect: adds number to the entry

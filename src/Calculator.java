@@ -35,13 +35,18 @@ public class Calculator {
     private BigDecimal result;
     private String ln;
     private String rn;
+    private int lnClick;
+    private int rnClick;
     private Operators op;
+    private final static int MAX_NUMBER = 10;
 
     public Calculator() {
         // init global variable
         op = Operators.EMPTY;
         ln = "";
         rn = "";
+        lnClick = 0;
+        rnClick = 0;
 
         // init Jframe
         JFrame f = new JFrame("Calculator");
@@ -64,31 +69,55 @@ public class Calculator {
                 entryText.setText(ln + " + ");
             }
         });
-        oneBtn.addActionListener(e -> {
-            // If operator buttons have not been clicked yet
-            // keep adding number to ln (left number)
-            if (op == Operators.EMPTY) {
-                if (ln.isEmpty()) {
-                    entryText.setText("");
-                    ln = "1";
-                } else {
-                    ln = ln.concat("1");
-                }
-                entryText.setText(ln);
-            } else {
-                rn = "1";
-                entryText.setText(entryText.getText() + rn);
-            }
-        });
         equalBtn.addActionListener(e -> {
             calculateResult();
             entryText.setText(entryText.getText() + " = " + result.toString());
             ln = "";
             rn = "";
+            lnClick = 0;
+            rnClick = 0;
             op = Operators.EMPTY;
         });
+
+        // If operator buttons have not been clicked yet
+        // keep adding number to ln (left number)
+        oneBtn.addActionListener(e -> addNumber(1));
+        twoBtn.addActionListener(e -> addNumber(2));
+        threeBtn.addActionListener(e -> addNumber(3));
+        fourBtn.addActionListener(e -> addNumber(4));
+        fiveBtn.addActionListener(e -> addNumber(5));
+        sixBtn.addActionListener(e -> addNumber(6));
+        sevenBtn.addActionListener(e -> addNumber(7));
+        eightBtn.addActionListener(e -> addNumber(8));
+        nineBtn.addActionListener(e -> addNumber(9));
+
+        // Clear, ClearEntry, Back
+        clearEntryBtn.addActionListener(e -> clearEntry());
+        clearBtn.addActionListener(e -> clear());
+        backBtn.addActionListener(e -> delete());
     }
 
+    // Effect: adds number to the entry
+    private void addNumber(int number) {
+        String n = Integer.toString(number);
+        if (op == Operators.EMPTY) {
+            if (ln.isEmpty()) {
+                entryText.setText("");
+                ln = n;
+                lnClick++;
+            } else if (lnClick < MAX_NUMBER + 1) {
+                ln = ln.concat(n);
+                lnClick++;
+            }
+            entryText.setText(ln);
+        } else {
+            if (rnClick < MAX_NUMBER + 1) {
+                rn = rn.concat(n);
+                entryText.setText(entryText.getText() + n);
+                rnClick++;
+            }
+        }
+    }
 
     // Effect: if Equals Operator has been used to determine the
     // result, clear both entryText and resultText. If Equals Operator
@@ -100,10 +129,14 @@ public class Calculator {
         res = res.substring(res.length() - 1);
 
         if (res == "=") {
-            entryText.setText("");
-            resultText.setText("");
+            clear();
         } else {
             entryText.setText("");
+            ln = "";
+            rn = "";
+            lnClick = 0;
+            rnClick = 0;
+            op = op.EMPTY;
         }
     }
 
@@ -111,16 +144,34 @@ public class Calculator {
     private void clear() {
         entryText.setText("");
         resultText.setText("");
+        ln = "";
+        rn = "";
+        lnClick = 0;
+        rnClick = 0;
+        op = op.EMPTY;
     }
 
     // Effect: delete the last character of the entryText
     private void delete() {
         String entry = entryText.getText();
-
+        // only perform if entry is not empty
         if (!entry.isEmpty()) {
-            // delete the last entry of the entryText
-            entry = entry.substring(0, entry.length() - 1);
-            entryText.setText(entry);
+            if (op != op.EMPTY && !rn.isEmpty()) {
+                // delete the last entry of the entryText
+                // delete right numbers only if results have not been calculated
+                entry = entry.substring(0, entry.length() - 1);
+                entryText.setText(entry);
+                rn = rn.substring(0, rn.length() - 1);
+                rnClick--;
+            } else if (!ln.isEmpty() && rn.isEmpty() && op == op.EMPTY){
+
+                // delete the last entry of the entryText
+                // delete left numbers only if operator has not been used
+                entry = entry.substring(0, entry.length() - 1);
+                entryText.setText(entry);
+                ln = ln.substring(0, ln.length() - 1);
+                lnClick--;
+            }
         }
     }
 
@@ -169,10 +220,10 @@ public class Calculator {
                 }
                 break;
             default:
-                result = new BigDecimal("0");
+                result = new BigDecimal(ln);
                 break;
         }
-
+        op = op.EQUALS;
         resultText.setText(result.toString());
     }
 

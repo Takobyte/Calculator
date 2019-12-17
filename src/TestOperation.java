@@ -277,4 +277,12 @@ public class TestOperation {
         assertEquals("99999.999995", testCalculator.getResultText());
     }
 
+    @Test
+    public void testClearEntry() {
+        testCalculator.setLeftNumber("9999999999");
+        testCalculator.setOperator(Operators.SQUAREROOT);
+        testCalculator.calculateResult();
+        assertEquals("", testCalculator.getResultText());
+    }
+
 }

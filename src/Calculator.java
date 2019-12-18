@@ -59,17 +59,18 @@ public class Calculator {
 
         // Operators
         plusBtn.addActionListener(e -> {
-            op = Operators.ADDITION;
-            if (ln.isEmpty()) {
-                if (getResultText().isEmpty()) {
-                    ln = "0";
-                    entryText.setText("0 + ");
-                } else {
-                    entryText.setText(getResultText() + " + ");
-                }
-            } else {
-                entryText.setText(ln + " + ");
-            }
+            addOperators(op.ADDITION);
+//            op = Operators.ADDITION;
+//            if (ln.isEmpty()) {
+//                if (getResultText().isEmpty()) {
+//                    ln = "0";
+//                    entryText.setText("0 + ");
+//                } else {
+//                    entryText.setText(getResultText() + " + ");
+//                }
+//            } else {
+//                entryText.setText(ln + " + ");
+//            }
         });
         minusBtn.addActionListener(new ActionListener() {
             @Override
@@ -175,6 +176,78 @@ public class Calculator {
                 rnClick++;
             }
         }
+    }
+
+    // Modifies: modifies op, ln
+    // Effects: if left number is empty you add 0 before it, or
+    // if result is not empty you add result before it
+    // otherwise add operator after the left number
+    // However, if rn is present instead, combine ln and rn and add operator
+    private void addOperators(Operators op) {
+        //if left side is empty
+        if (ln.isEmpty() && this.op != op) {
+            this.op = op;
+            // if left side is empty and result box is empty
+            if (resultText.getText().isEmpty()) {
+                ln = "0";
+                entryText.setText("0" + " " + toStringOperator(op) + " ");
+            }
+            //add result box to the ln if result box is not empty
+            else if (!resultText.getText().isEmpty()){
+                ln = resultText.getText();
+                entryText.setText(resultText.getText() + " " + toStringOperator(op) + " ");
+            }
+        } else { // if left side is not empty
+            // if right side is not empty then combine ln+rn
+            this.op = op;
+            if (!rn.isEmpty()) {
+                BigDecimal combined_num = new Addition().operation(ln, rn);
+                ln = combined_num.toString();
+                rn = "";
+                lnClick = 0;
+                rnClick = 0;
+                entryText.setText(entryText.getText() + " " + toStringOperator(op) + " ");
+            } // otherwise just add operator at the end of left number
+            else {
+                entryText.setText(entryText.getText() + " " + toStringOperator(op) + " ");
+            }
+        }
+    }
+
+    // Modifies: Operator to string
+    // Effects: give string output from Operator
+    private String toStringOperator(Operators op) {
+        String result;
+        switch(op) {
+            case ADDITION:
+                result = "+";
+                break;
+            case SUBTRACTION:
+                result = "-";
+                break;
+            case MULTIPLICATION:
+                result = "x";
+                break;
+            case DIVISION:
+                result = "÷";
+                break;
+            case INVERSE:
+                result = "1 /";
+                break;
+            case PERCENT:
+                result = "%";
+                break;
+            case SQUARE:
+                result = "^2";
+                break;
+            case SQUAREROOT:
+                result = "√";
+                break;
+            default:
+                result = "";
+                break;
+        }
+        return result;
     }
 
     // Effect: if Equals Operator has been used to determine the

@@ -71,7 +71,7 @@ public class Calculator {
             addOperators(op.MULTIPLICATION);
         });
         equalBtn.addActionListener(e -> {
-            if (rn.isEmpty()) {
+            if (rn.isEmpty() && op != Operators.EMPTY) {
                 addNumber(0);
             }
             calculateResult();
@@ -83,7 +83,40 @@ public class Calculator {
             op = Operators.EMPTY;
         });
 
-
+        // Special Operators
+        changeSignBtn.addActionListener(e -> {
+            // if ln is not empty and op is empty
+            if (!ln.isEmpty() && op == op.EMPTY) { // change left number's sign
+                BigDecimal changed_sign = new ChangeSign().operation(ln);
+                ln = changed_sign.toString();
+                entryText.setText(ln);
+            } else if (!rn.isEmpty()) { // change right number's sign
+                BigDecimal changed_sign = new ChangeSign().operation(rn);
+                String tempET = entryText.getText().substring(0,entryText.getText().length() - rn.length());
+                rn = changed_sign.toString();
+                entryText.setText(tempET.concat(rn));
+            } else if (op == op.EMPTY){ // change result's sign
+                BigDecimal changed_sign = new ChangeSign().operation(resultText.getText());
+                ln = changed_sign.toString();
+                entryText.setText(ln);
+            }
+        });
+        percentBtn.addActionListener(e -> {
+            // if ln is not empty and op is empty
+            if (!ln.isEmpty() && op == Operators.EMPTY) { // add % to left Number
+                BigDecimal percent = new Percent().operation(ln);
+                entryText.setText(ln.concat("%"));
+                ln = percent.toString();
+            } else if (!rn.isEmpty()) { // add % to right number
+                BigDecimal percent = new Percent().operation(rn);
+                entryText.setText(entryText.getText().concat("%"));
+                rn = percent.toString();
+            } else if (op == Operators.EMPTY){ // add % to result
+                BigDecimal percent = new Percent().operation(resultText.getText());
+                entryText.setText(ln.concat("%"));
+                ln = percent.toString();
+            }
+        });
 
         // If operator buttons have not been clicked yet
         // keep adding number to ln (left number)
@@ -102,12 +135,7 @@ public class Calculator {
         clearEntryBtn.addActionListener(e -> clearEntry());
         clearBtn.addActionListener(e -> clear());
         backBtn.addActionListener(e -> delete());
-        percentBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
         invertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,23 +158,6 @@ public class Calculator {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-        changeSignBtn.addActionListener(e -> {
-            // if ln is not empty and op is empty
-            if (!ln.isEmpty() && op == op.EMPTY) { // change left number's sign
-                BigDecimal changed_sign = new ChangeSign().operation(ln);
-                ln = changed_sign.toString();
-                entryText.setText(ln);
-            } else if (!rn.isEmpty()) { // change right number's sign
-                BigDecimal changed_sign = new ChangeSign().operation(rn);
-                String tempET = entryText.getText().substring(0,entryText.getText().length() - rn.length());
-                rn = changed_sign.toString();
-                entryText.setText(tempET.concat(rn));
-            } else if (op == op.EMPTY){ // change result's sign
-                BigDecimal changed_sign = new ChangeSign().operation(resultText.getText());
-                ln = changed_sign.toString();
-                entryText.setText(ln);
             }
         });
     }
@@ -349,7 +360,6 @@ public class Calculator {
                 result = new BigDecimal(ln);
                 break;
         }
-        op = op.EQUALS;
         resultText.setText(result.toString());
     }
 

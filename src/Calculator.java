@@ -60,17 +60,6 @@ public class Calculator {
         // Operators
         plusBtn.addActionListener(e -> {
             addOperators(op.ADDITION);
-//            op = Operators.ADDITION;
-//            if (ln.isEmpty()) {
-//                if (getResultText().isEmpty()) {
-//                    ln = "0";
-//                    entryText.setText("0 + ");
-//                } else {
-//                    entryText.setText(getResultText() + " + ");
-//                }
-//            } else {
-//                entryText.setText(ln + " + ");
-//            }
         });
         minusBtn.addActionListener(new ActionListener() {
             @Override
@@ -164,13 +153,13 @@ public class Calculator {
                 entryText.setText("");
                 ln = n;
                 lnClick++;
-            } else if (lnClick < MAX_NUMBER + 1) {
+            } else if (lnClick < MAX_NUMBER) {
                 ln = ln.concat(n);
                 lnClick++;
             }
             entryText.setText(ln);
         } else {
-            if (rnClick < MAX_NUMBER + 1) {
+            if (rnClick < MAX_NUMBER) {
                 rn = rn.concat(n);
                 entryText.setText(entryText.getText() + n);
                 rnClick++;

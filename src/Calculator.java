@@ -61,11 +61,14 @@ public class Calculator {
         plusBtn.addActionListener(e -> {
             addOperators(op.ADDITION);
         });
-        minusBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        minusBtn.addActionListener(e -> {
+            addOperators(op.SUBTRACTION);
+        });
+        divideBtn.addActionListener(e -> {
+            addOperators(op.DIVISION);
+        });
+        multiplyButton.addActionListener(e -> {
+            addOperators(op.MULTIPLICATION);
         });
         equalBtn.addActionListener(e -> {
             calculateResult();
@@ -76,6 +79,7 @@ public class Calculator {
             rnClick = 0;
             op = Operators.EMPTY;
         });
+
 
 
         // If operator buttons have not been clicked yet
@@ -114,18 +118,6 @@ public class Calculator {
             }
         });
         rootButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        divideBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        multiplyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 

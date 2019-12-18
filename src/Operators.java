@@ -8,5 +8,6 @@ public enum Operators {
     SQUARE,
     SQUAREROOT,
     EQUALS,
+    CHANGESIGN,
     EMPTY,
 }

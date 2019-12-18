@@ -71,6 +71,9 @@ public class Calculator {
             addOperators(op.MULTIPLICATION);
         });
         equalBtn.addActionListener(e -> {
+            if (rn.isEmpty()) {
+                addNumber(0);
+            }
             calculateResult();
             entryText.setText(entryText.getText() + " = " + result.toString());
             ln = "";
@@ -129,10 +132,21 @@ public class Calculator {
 
             }
         });
-        changeSignBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        changeSignBtn.addActionListener(e -> {
+            // if ln is not empty and op is empty
+            if (!ln.isEmpty() && op == op.EMPTY) { // change left number's sign
+                BigDecimal changed_sign = new ChangeSign().operation(ln);
+                ln = changed_sign.toString();
+                entryText.setText(ln);
+            } else if (!rn.isEmpty()) { // change right number's sign
+                BigDecimal changed_sign = new ChangeSign().operation(rn);
+                String tempET = entryText.getText().substring(0,entryText.getText().length() - rn.length());
+                rn = changed_sign.toString();
+                entryText.setText(tempET.concat(rn));
+            } else if (op == op.EMPTY){ // change result's sign
+                BigDecimal changed_sign = new ChangeSign().operation(resultText.getText());
+                ln = changed_sign.toString();
+                entryText.setText(ln);
             }
         });
     }

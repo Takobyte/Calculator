@@ -38,6 +38,7 @@ public class Calculator {
     private int lnClick;
     private int rnClick;
     private Operators op;
+    private boolean specialOp;
     private final static int MAX_NUMBER = 10;
 
     public Calculator() {
@@ -47,6 +48,7 @@ public class Calculator {
         rn = "";
         lnClick = 0;
         rnClick = 0;
+        specialOp = false;
 
         // init Jframe
         JFrame f = new JFrame("Calculator");
@@ -71,16 +73,47 @@ public class Calculator {
             addOperators(op.MULTIPLICATION);
         });
         equalBtn.addActionListener(e -> {
-            if (rn.isEmpty() && op != Operators.EMPTY) {
-                addNumber(0);
+            // only add 0 when rn is empty and operators such as +-x/ have been used
+            // or add 0 when entry text is empty and result text is empty
+            // or when resultText is not a number
+            if (rn.isEmpty() && (op == Operators.ADDITION || op == Operators.SUBTRACTION || op == Operators.MULTIPLICATION || op == Operators.DIVISION) ||
+                    entryText.getText().isEmpty() && resultText.getText().isEmpty()) {
+                entryText.setText("0");
             }
-            calculateResult();
-            entryText.setText(entryText.getText() + " = " + result.toString());
-            ln = "";
-            rn = "";
-            lnClick = 0;
-            rnClick = 0;
-            op = Operators.EMPTY;
+            if (this.op == Operators.EQUALS) {
+                if (entryText.getText().isEmpty()) { // if entry text is empty
+                    // TODO: fix division undefined text coming into entry text
+                    try {
+                        BigDecimal resultNumber = new BigDecimal(resultText.getText());
+                        entryText.setText(resultNumber.toString());
+                        ln = resultText.getText();
+                    } catch (Exception err) {
+                        entryText.setText("0");
+                    }
+                    ln = "";
+                    rn = "";
+                    lnClick = 0;
+                    rnClick = 0;
+                    op = Operators.EQUALS;
+                } else {
+                    try {
+                        BigDecimal resultNumber = new BigDecimal(resultText.getText());
+                        entryText.setText(resultNumber.toString());
+                        ln = resultText.getText();
+                    } catch (Exception err) {
+                        addNumber(0);
+                    }
+                    // do nothing
+                }
+            } else {
+                calculateResult();
+                entryText.setText(entryText.getText() + " = " + result.toString());
+                ln = "";
+                rn = "";
+                lnClick = 0;
+                rnClick = 0;
+                op = Operators.EQUALS;
+            }
         });
 
         // Special Operators
@@ -100,21 +133,18 @@ public class Calculator {
                 ln = changed_sign.toString();
                 entryText.setText(ln);
             }
+            this.op = op.CHANGESIGN;
         });
         percentBtn.addActionListener(e -> {
             // if ln is not empty and op is empty
-            if (!ln.isEmpty() && op == Operators.EMPTY) { // add % to left Number
-                BigDecimal percent = new Percent().operation(ln);
-                entryText.setText(ln.concat("%"));
-                ln = percent.toString();
+            if (!ln.isEmpty() && (op == Operators.EMPTY || op == Operators.EQUALS)) { // add % to left Number
+//                BigDecimal percent = new Percent().operation(ln);
+                entryText.setText(ln.concat(toStringOperator(op.PERCENT)));
             } else if (!rn.isEmpty()) { // add % to right number
-                BigDecimal percent = new Percent().operation(rn);
-                entryText.setText(entryText.getText().concat("%"));
-                rn = percent.toString();
-            } else if (op == Operators.EMPTY){ // add % to result
-                BigDecimal percent = new Percent().operation(resultText.getText());
-                entryText.setText(ln.concat("%"));
-                ln = percent.toString();
+                entryText.setText(entryText.getText().concat(toStringOperator(op.PERCENT)));
+            } else if (op == Operators.EMPTY || op == Operators.EQUALS){ // add % to result
+                entryText.setText(resultText.getText().concat(toStringOperator(op.PERCENT)));
+                ln = resultText.getText();
             }
         });
 
@@ -136,11 +166,23 @@ public class Calculator {
         clearBtn.addActionListener(e -> clear());
         backBtn.addActionListener(e -> delete());
 
-        invertButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        invertButton.addActionListener(e -> {
+            // if ln is not empty and op is empty
+            if (!ln.isEmpty() && op == Operators.EMPTY) { // add inversed result to entryText in LN
+                BigDecimal inverted_num = new Inverse().operation(ln);
+                ln = inverted_num.toString();
+                lnClick = ln.length();
+                entryText.setText(ln);
+            } else if (!rn.isEmpty()) { // add inversed result to RN
+                BigDecimal percent = new Inverse().operation(rn);
+                entryText.setText(entryText.getText().concat("%"));
+                rn = percent.toString();
+            } else if (op == Operators.EMPTY){ // add % to result
+                BigDecimal percent = new Percent().operation(resultText.getText());
+                entryText.setText(ln.concat("%"));
+                ln = percent.toString();
             }
+            this.op = op.INVERSE;
         });
         squareButton.addActionListener(new ActionListener() {
             @Override
@@ -154,10 +196,25 @@ public class Calculator {
 
             }
         });
-        decimalBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        decimalBtn.addActionListener(e -> {
+            // restrict from being used twice in a row
+            if (!ln.isEmpty() && (this.op == Operators.EMPTY || this.op == Operators.EQUALS)) {
+                if (ln.contains(".")) {
+                    // do nothing
+                } else {
+                    ln = ln.concat(".");
+                    entryText.setText(entryText.getText().concat("."));
+                }
+            } else if (!rn.isEmpty()){
+                if (rn.contains(".")) {
+                    // do nothing
+                } else {
+                    rn = rn.concat(".");
+                    entryText.setText(entryText.getText().concat("."));
+                }
+            } else {
+                ln = "0.";
+                entryText.setText(".");
             }
         });
     }
@@ -165,7 +222,7 @@ public class Calculator {
     // Effect: adds number to the entry
     private void addNumber(int number) {
         String n = Integer.toString(number);
-        if (op == Operators.EMPTY) {
+        if (op == Operators.EMPTY || op == Operators.EQUALS) {
             if (ln.isEmpty()) {
                 entryText.setText("");
                 ln = n;
@@ -191,7 +248,7 @@ public class Calculator {
     // However, if rn is present instead, combine ln and rn and add operator
     private void addOperators(Operators op) {
         //if left side is empty
-        if (ln.isEmpty() && this.op != op) {
+        if ((ln.isEmpty() && (this.op == op.EMPTY || this.op == op.EQUALS)) || ((rn.isEmpty() && ln.isEmpty()) )) {
             this.op = op;
             // if left side is empty and result box is empty
             if (resultText.getText().isEmpty()) {
@@ -205,16 +262,17 @@ public class Calculator {
             }
         } else { // if left side is not empty
             // if right side is not empty then combine ln+rn
-            this.op = op;
-            if (!rn.isEmpty()) {
-                BigDecimal combined_num = new Addition().operation(ln, rn);
+            if ((!rn.isEmpty())) {
+                BigDecimal combined_num = calculateLeft();
                 ln = combined_num.toString();
                 rn = "";
                 lnClick = 0;
                 rnClick = 0;
+                this.op = op;
                 entryText.setText(entryText.getText() + " " + toStringOperator(op) + " ");
-            } // otherwise just add operator at the end of left number
-            else {
+            }  else if (rn.isEmpty() && (this.op == Operators.EMPTY || this.op == Operators.EQUALS)){ // otherwise just add operator at the end of left number
+                // TODO: fix this for percent
+                this.op = op;
                 entryText.setText(entryText.getText() + " " + toStringOperator(op) + " ");
             }
         }
@@ -224,6 +282,7 @@ public class Calculator {
     // Effects: give string output from Operator
     private String toStringOperator(Operators op) {
         String result;
+        this.op = op;
         switch(op) {
             case ADDITION:
                 result = "+";
@@ -238,16 +297,20 @@ public class Calculator {
                 result = "÷";
                 break;
             case INVERSE:
-                result = "1 /";
+                result = "1/";
+                specialOp = true;
                 break;
             case PERCENT:
                 result = "%";
+                specialOp = true;
                 break;
             case SQUARE:
                 result = "^2";
+                specialOp = true;
                 break;
             case SQUAREROOT:
                 result = "√";
+                specialOp = true;
                 break;
             default:
                 result = "";
@@ -273,6 +336,7 @@ public class Calculator {
             rn = "";
             lnClick = 0;
             rnClick = 0;
+            specialOp = false;
             op = op.EMPTY;
         }
     }
@@ -285,6 +349,7 @@ public class Calculator {
         rn = "";
         lnClick = 0;
         rnClick = 0;
+        specialOp = false;
         op = op.EMPTY;
     }
 
@@ -296,22 +361,82 @@ public class Calculator {
             if (op != op.EMPTY && !rn.isEmpty()) {
                 // delete the last entry of the entryText
                 // delete right numbers only if results have not been calculated
+                boolean isDecimal = false;
+                if (rn.contains(".") && rn.substring(rn.length() - 1) == "'") {
+                    isDecimal = true;
+                }
                 entry = entry.substring(0, entry.length() - 1);
                 entryText.setText(entry);
                 rn = rn.substring(0, rn.length() - 1);
-                rnClick--;
-            } else if (!ln.isEmpty() && rn.isEmpty() && op == op.EMPTY){
+                if (rnClick > 0 && !isDecimal) {
+                    rnClick--;
+                }
+            } else if (!ln.isEmpty() && rn.isEmpty() && (op == op.EMPTY || op == op.EQUALS)){
 
                 // delete the last entry of the entryText
                 // delete left numbers only if operator has not been used
+                boolean isDecimal = false;
+                if (ln.contains(".") && ln.substring(ln.length() - 1) == "'") {
+                    isDecimal = true;
+                }
                 entry = entry.substring(0, entry.length() - 1);
                 entryText.setText(entry);
                 ln = ln.substring(0, ln.length() - 1);
-                lnClick--;
+                if (lnClick > 0 && !isDecimal) {
+                    lnClick--;
+                }
             }
         }
     }
 
+    // Effect: calculate left side and return number
+    public BigDecimal calculateLeft() {
+        BigDecimal result;
+        switch (op) {
+            case ADDITION:
+                result = new Addition().operation(ln, rn);
+                break;
+            case SUBTRACTION:
+                result = new Subtraction().operation(ln, rn);
+                break;
+            case MULTIPLICATION:
+                result = new Multiplication().operation(ln, rn);
+                break;
+            case DIVISION:
+                try {
+                    result = new Division().operation(ln, rn);
+                } catch (Exception e) {
+                    result = new BigDecimal("0");
+                    resultText.setText("Division Undefined");
+                }
+                break;
+            case INVERSE:
+                if (!rn.isEmpty()) {
+                    result = new Inverse().operation(ln, rn);
+                } else {
+                    result = new Inverse().operation(ln);
+                }
+                break;
+            case PERCENT:
+                result = new Percent().operation(ln);
+                break;
+            case SQUARE:
+                result = new Square().operation(ln);
+                break;
+            case SQUAREROOT:
+                try {
+                    result = new SquareRoot().operation(ln);
+                } catch (Exception e) {
+                    result = new BigDecimal("0");
+                    resultText.setText("Invalid Input");
+                }
+                break;
+            default:
+                result = new BigDecimal(ln);
+                break;
+        }
+        return result;
+    }
 
     // Effect: calculate the result depending on the Operator used
     // and display the text

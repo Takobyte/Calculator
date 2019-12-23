@@ -278,11 +278,15 @@ public class TestOperation {
     }
 
     @Test
-    public void testClearEntry() {
-        testCalculator.setLeftNumber("9999999999");
-        testCalculator.setOperator(Operators.SQUAREROOT);
-        testCalculator.calculateResult();
-        assertEquals("", testCalculator.getResultText());
+    public void testPatternMatcherFalse() {
+        boolean result = testCalculator.isNumber("a");
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void testPatternMatcherTrue() {
+        boolean result = testCalculator.isNumber("5");
+        assertEquals(true, result);
     }
 
 }

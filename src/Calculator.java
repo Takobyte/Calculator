@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Calculator {
     private JTextField entryText;
@@ -82,6 +83,7 @@ public class Calculator {
                     entryText.getText().isEmpty() && resultText.getText().isEmpty()) {
                 addNumber(0);
             }
+            // If equals is being repeated
             if (this.op == Operators.EQUALS) {
                 if (entryText.getText().isEmpty()) { // if entry text is empty
                     // TODO: fix division undefined text coming into entry text
@@ -108,13 +110,26 @@ public class Calculator {
                     // do nothing
                 }
             } else {
-                calculateResult();
-                entryText.setText(entryText.getText() + " = " + result.toString());
-                ln = "";
-                rn = "";
-                lnClick = 0;
-                rnClick = 0;
-                op = Operators.EQUALS;
+                if (!(ln.isEmpty() && rn.isEmpty())) {
+                    calculateResult();
+                    if (result != null) {
+                        entryText.setText(entryText.getText() + " = " + result.toString());
+                    }
+                    ln = "";
+                    rn = "";
+                    lnClick = 0;
+                    rnClick = 0;
+                    op = Operators.EQUALS;
+                } else {
+                    ln = "";
+                    rn = "";
+                    lnClick = 0;
+                    rnClick = 0;
+                    entryText.setText(resultText.getText());
+                    int resultNumber = Integer.parseInt(resultText.getText());
+                    addNumber(resultNumber);
+                    op = Operators.EQUALS;
+                }
             }
         });
 
@@ -211,7 +226,6 @@ public class Calculator {
                 entryText.setText(ln.concat("%"));
                 ln = percent.toString();
             }
-            this.op = op.INVERSE;
         });
         squareButton.addActionListener(new ActionListener() {
             @Override
@@ -277,6 +291,10 @@ public class Calculator {
     // otherwise add operator after the left number
     // However, if rn is present instead, combine ln and rn and add operator
     private void addOperators(Operators op) {
+        if ((!resultText.getText().isEmpty() && result == null) && ln.isEmpty()) {
+            return;
+        }
+
         //if left side is empty
         if ((ln.isEmpty() && (this.op == op.EMPTY || this.op == op.EQUALS)) || ((rn.isEmpty() && ln.isEmpty()) )) {
             this.op = op;
@@ -396,34 +414,40 @@ public class Calculator {
         String entry = entryText.getText();
         // only perform if entry is not empty
         if (!entry.isEmpty()) {
+            // If operator has been used and right side is not empty delete from right number
             if (op != op.EMPTY && !rn.isEmpty()) {
                 // delete the last entry of the entryText
                 // delete right numbers only if results have not been calculated
-                boolean isDecimal = false;
-                if (rn.contains(".") && rn.substring(rn.length() - 1) == "'") {
-                    isDecimal = true;
-                }
-                entry = entry.substring(0, entry.length() - 1);
-                entryText.setText(entry);
-                rn = rn.substring(0, rn.length() - 1);
-                if (rnClick > 0 && !isDecimal) {
+                String lastChar = entryText.getText().substring(entryText.getText().length() - 1);
+                boolean deleteLastChar = isNumber(lastChar);
+                if (deleteLastChar) {
+                    entry = entry.substring(0, entry.length() - 1);
+                    entryText.setText(entry);
+                    rn = rn.substring(0, rn.length() - 1);
                     rnClick--;
                 }
+            // if operator has not been used and left side is not empty delete from left side
             } else if (!ln.isEmpty() && rn.isEmpty() && (op == op.EMPTY || op == op.EQUALS)){
-                //TODO: fix back deleting %
                 // delete the last entry of the entryText
                 // delete left numbers only if operator has not been used
-                boolean isDecimal = false;
-                if (ln.contains(".") && ln.substring(ln.length() - 1) == "'") {
-                    isDecimal = true;
-                }
-                entry = entry.substring(0, entry.length() - 1);
-                entryText.setText(entry);
-                ln = ln.substring(0, ln.length() - 1);
-                if (lnClick > 0 && !isDecimal) {
+                String lastChar = entryText.getText().substring(entryText.getText().length() - 1);
+                boolean deleteLastChar = isNumber(lastChar);
+                if (deleteLastChar) {
+                    entry = entry.substring(0, entry.length() - 1);
+                    entryText.setText(entry);
+                    ln = ln.substring(0, ln.length() - 1);
                     lnClick--;
                 }
             }
+        }
+    }
+
+    public boolean isNumber(String s) {
+        Pattern p = Pattern.compile("[0-9]");
+        if (p.matcher(s).matches()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

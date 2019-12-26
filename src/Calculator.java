@@ -212,31 +212,59 @@ public class Calculator {
 
         invertButton.addActionListener(e -> {
             // if ln is not empty and op is empty
-            if (!ln.isEmpty() && op == Operators.EMPTY) { // add inversed result to entryText in LN
+            if (!ln.isEmpty() && (op == Operators.EMPTY || op == Operators.EQUALS)) { // add inversed result to entryText in LN
                 BigDecimal inverted_num = new Inverse().operation(ln);
                 ln = inverted_num.toString();
                 lnClick = ln.length();
                 entryText.setText(ln);
             } else if (!rn.isEmpty()) { // add inversed result to RN
-                BigDecimal percent = new Inverse().operation(rn);
-                entryText.setText(entryText.getText().concat("%"));
-                rn = percent.toString();
-            } else if (op == Operators.EMPTY){ // add % to result
-                BigDecimal percent = new Percent().operation(resultText.getText());
-                entryText.setText(ln.concat("%"));
-                ln = percent.toString();
+                BigDecimal inverted_num = new Inverse().operation(rn);
+                String temp_text = entryText.getText();
+                temp_text = temp_text.substring(0,temp_text.length() - rn.length());
+                rn = inverted_num.toString();
+                entryText.setText(temp_text.concat(rn));
+            } else if ((!resultText.getText().isEmpty()) && (op == Operators.EMPTY || op == Operators.EQUALS)) { // square to result
+                BigDecimal inverted_num = new Inverse().operation(resultText.getText());
+                ln = inverted_num.toString();
+                entryText.setText(ln);
             }
         });
-        squareButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        squareButton.addActionListener(e -> {
+            // if ln is not empty and op is empty
+            if (!ln.isEmpty() && (op == Operators.EMPTY || op == Operators.EQUALS)) { // add square'd result to entryText in LN
+                BigDecimal squared_num = new Square().operation(ln);
+                ln = squared_num.toString();
+                lnClick = ln.length();
+                entryText.setText(ln);
+            } else if (!rn.isEmpty()) { // add square'd result to RN
+                BigDecimal squared_num = new Square().operation(rn);
+                String temp_text = entryText.getText();
+                temp_text = temp_text.substring(0,temp_text.length() - rn.length());
+                rn = squared_num.toString();
+                entryText.setText(temp_text.concat(rn));
+            } else if ((!resultText.getText().isEmpty()) && (op == Operators.EMPTY || op == Operators.EQUALS)) { // square to result
+                BigDecimal squared_num = new Square().operation(resultText.getText());
+                ln = squared_num.toString();
+                entryText.setText(ln);
             }
         });
-        rootButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        rootButton.addActionListener(e -> {
+            // if ln is not empty and op is empty
+            if (!ln.isEmpty() && (op == Operators.EMPTY || op == Operators.EQUALS)) { // add square'd result to entryText in LN
+                BigDecimal sqrt_num = new SquareRoot().operation(ln);
+                ln = sqrt_num.toString();
+                lnClick = ln.length();
+                entryText.setText(ln);
+            } else if (!rn.isEmpty()) { // add square'd result to RN
+                BigDecimal sqrt_num = new SquareRoot().operation(rn);
+                String temp_text = entryText.getText();
+                temp_text = temp_text.substring(0,temp_text.length() - rn.length());
+                rn = sqrt_num.toString();
+                entryText.setText(temp_text.concat(rn));
+            } else if ((!resultText.getText().isEmpty()) && (op == Operators.EMPTY || op == Operators.EQUALS)) { // square to result
+                BigDecimal sqrt_num = new SquareRoot().operation(resultText.getText());
+                ln = sqrt_num.toString();
+                entryText.setText(ln);
             }
         });
         decimalBtn.addActionListener(e -> {
